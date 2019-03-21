@@ -22,8 +22,8 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::get('/settings', 'SettingsController@index')->name('settings');
-Route::get('/categories', 'CategoriesController@getCategories')->name('categories');
-Route::get('/subcategories/{id}', 'CategoriesController@getSubCategories')->name('subcategories');
+Route::middleware('cors')->get('/categories', 'CategoriesController@getCategories')->name('categories');
+Route::middleware('cors')->get('/subcategories/{id}', 'CategoriesController@getSubCategories')->name('subcategories');
 Route::get('/callback', 'CategoriesController@callback')->name('callback');
 // Route::middleware('auth:api')->get('/todos', function (Request $request) {
 //     return $request->user()->todos;

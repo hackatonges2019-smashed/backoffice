@@ -17,7 +17,7 @@ class CategoriesController extends Controller
         // $categories = Categories::all();
         $categories = Categories::where('idParent', null)->get();
         // var_dump(json_encode($categories));die;
-        return response()->json(['success' => json_decode($categories)]);
+        return response()->json(json_decode($categories));
     }
 
     public function getSubCategories($id)
@@ -25,7 +25,7 @@ class CategoriesController extends Controller
         // $categories = Categories::all();
         $categories = Categories::where('idParent',$id)->get();
         // var_dump(json_encode($categories));die;
-        return response()->json(['success' => json_decode($categories)]);
+        return response()->json(json_decode($categories));
     }
 
     public function callback(Request $request)
