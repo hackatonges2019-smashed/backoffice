@@ -20,9 +20,7 @@ class ArticlesController extends Controller
 		$dateAYearAgo = date("Ymd",$Ayearago);
 		$country = "fr-fr";
     	foreach ($departements as $departement) {
-    		// var_dump($departement->code);
     		$thiscities = json_decode($this->getCities($departement->code)->getContent());
-    		// var_dump($thiscities);die;
 
     		foreach ($thiscities as $city) {
     			// var_dump($city->nom);die;
@@ -41,7 +39,6 @@ class ArticlesController extends Controller
 
 				$articles = ArticlesCaches::where('keyword', $keywords.$city->nom)->first();
 				if($articles){
-					var_dump("here");
 					$all_articles = $all_articles + json_decode($articles->data)->articles;
 				} else {
 					$articles = new ArticlesCaches;
@@ -50,27 +47,13 @@ class ArticlesController extends Controller
 			        $articles->save();
 					$all_articles = $all_articles + json_decode($articles->data)->articles;
 				}
-				// var_dump($all_articles);die;
     		}
-			var_dump($all_articles);die;
-
-    		
-			// $cities = $cities + $thiscities;
 			$count++;
     	}
-    	var_dump($count);
-		var_dump($cities);die;
-		return response()->json($cities);
+		return response()->json($all_articles);
 	}
 
     function getCities($departements){
-    	// $cities = [];
-    	// $departements = json_decode($this->getDepartements()->getContent());
-    	// // var_dump($departements);die;
-    	// $count = 0;
-    	// foreach ($departements as $departement) {
-	    	// var_dump($departement);die;
-    		// var_dump(json_decode($departements->getContent()));die;
     		$client = new Client(); //GuzzleHttp\Client
 	    	$url = "https://geo.api.gouv.fr/departements/".$departements."/communes";
 			$result = $client->get($url, [
@@ -91,7 +74,6 @@ class ArticlesController extends Controller
 		        'fields' => 'nom,code'
 		    ]
 		]);
-		// var_dump($result->getBody()->getContents());die;
 		return response()->json(json_decode($result->getBody()->getContents()));
     }
 }
